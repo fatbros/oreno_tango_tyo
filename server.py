@@ -1,6 +1,6 @@
 from flask import Flask, render_template
-from flask_restful import Resource, Api, reqparse
-from pymongo import MongoClient
+from flask_restful import Resource, Api, reqparse, abort
+from pymongo import MongoClient, errors
 from bson.json_util import dumps
 
 app = Flask(__name__)
@@ -21,10 +21,19 @@ class Cards(Resource):
     args = self.parser.parse_args()
     client = MongoClient('localhost', 27017)
     db = client['vo_book']
-    inserted_card = db.cards.insert_one({
-      'en_vo': args.en_vo,
-      'ja_vo': args.ja_vo
-    })
+
+    # pymongo error handle document
+    # http://api.mongodb.com/python/current/api/pymongo/errors.html
+    try:
+      inserted_card = db.cards.insert_one({
+        'en_vo': args.en_vo,
+        'ja_vo': args.ja_vo
+      })
+    except errors.DuplicateKeyError as e:
+      abort(500, message='That vocabulary already exists')
+    except:
+      return False
+
     return inserted_card.acknowledged
 
   def delete(self):
