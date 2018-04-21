@@ -7,6 +7,12 @@
   <title>Document</title>
 </head>
 <body>
-  test html render
+  {% if login_url %}
+    <a href="{{login_url}}">Login</button>
+    {% else %}
+    <a href="{{logout_url}}">Logout</a>
+    <p>username : {{screen_name}}</p>
+    <p>admin? : {{is_admin}}</p>
+  {% endif %}
 </body>
 </html>

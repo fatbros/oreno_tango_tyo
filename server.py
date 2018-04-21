@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, redirect, url_for, request
+from flask import Flask, render_template, session, redirect, url_for, request, flash
 from flask_restful import Resource, Api, reqparse, abort
 from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
 from pymongo import MongoClient, errors
@@ -62,22 +62,33 @@ api.add_resource(Cards, '/cards')
 
 @app.route('/')
 def index():
-  for key in session.keys():
-    print(key)
-    print(session['twitter_oauth_token'])
-    print(session['twitter_oauth_token']['user_id'])
-
+  # for key in session.keys():
+  #   print(key)
+  #   print(session['twitter_oauth_token'])
+  #   print(session['twitter_oauth_token']['user_id'])
   if not twitter.authorized:
-    return redirect(url_for('twitter.login'))
-  resp = twitter.get('account/settings.json')
-  assert resp.ok
-  return "You are @{screen_name} on Twitter".format(screen_name=resp.json()["screen_name"])
+    return render_template('index.html',
+      login_url=url_for('twitter.login')
+    )
+  else:
+    resp = twitter.get('account/settings.json')
+    assert resp.ok
+
+    parsed=resp.json()
+    print(parsed)
+
+    return render_template('index.html',
+      logout_url=url_for('logout'),
+      screen_name=parsed['screen_name'],
+      is_admin=int(session['twitter_oauth_token']['user_id']) == app.config['ADMIN_ID']
+    )
 
 
 @app.route('/logout')
 def logout():
   session.clear()
-  return 'clear session'
+  flash(message='session clear')
+  return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
