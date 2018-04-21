@@ -1,10 +1,28 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session, redirect, url_for, request
 from flask_restful import Resource, Api, reqparse, abort
+from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
 from pymongo import MongoClient, errors
 from bson.json_util import dumps
 
-app = Flask(__name__)
+import os
+
+server_directory_path = os.path.dirname(os.path.abspath(__file__))
+
+app = Flask(
+  __name__,
+  instance_relative_config=True,
+  instance_path=os.path.join(server_directory_path, 'instance')
+)
+app.config.from_pyfile('config.py')
 api = Api(app)
+
+
+blueprint = make_twitter_blueprint(
+    api_key=app.config['TWITTER_API_KEY'],
+    api_secret=app.config['TWITTER_API_SECRET']
+)
+app.register_blueprint(blueprint, url_prefix="/login")
+
 
 class Cards(Resource):
   parser = reqparse.RequestParser()
@@ -41,10 +59,27 @@ class Cards(Resource):
 
 api.add_resource(Cards, '/cards')
 
+
 @app.route('/')
-def hello():
-  return render_template('index.html')
+def index():
+  for key in session.keys():
+    print(key)
+    print(session['twitter_oauth_token'])
+    print(session['twitter_oauth_token']['user_id'])
+
+  if not twitter.authorized:
+    return redirect(url_for('twitter.login'))
+  resp = twitter.get('account/settings.json')
+  assert resp.ok
+  return "You are @{screen_name} on Twitter".format(screen_name=resp.json()["screen_name"])
+
+
+@app.route('/logout')
+def logout():
+  session.clear()
+  return 'clear session'
+
 
 if __name__ == '__main__':
-  app.debug = True
-  app.run(host='0.0.0.0', port=5000)
+  app.debug = app.config['DEBUG']
+  app.run(host=app.config['HOST'], port=app.config['PORT'])
