@@ -7,6 +7,81 @@
   <title>Document</title>
 </head>
 <body>
-  test html render
+  {% if login_url %}
+    <a href="{{login_url}}">Login</button>
+
+    {% elif logout_url %}
+
+    <a href="{{logout_url}}">Logout</a>
+    <p>username : {{screen_name}}</p>
+    <p>admin? : {{is_admin}}</p>
+
+    {% if is_admin %}
+    <form id="form_post" action="?">
+      <label>
+        <p>english vocabulary</p>
+        <input type="text" name="en_vo">
+      </label>
+
+      <label>
+        <p>japanese vocabulary</p>
+        <input type="text" name="ja_vo">
+      </label>
+
+      <input type="submit" value="submit">
+    </form>
+    {% endif %}
+  {% endif %}
+
+  <div id="lists">
+
+  </div>
+
+  <script
+  src="https://code.jquery.com/jquery-2.2.4.js"
+  integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+  crossorigin="anonymous"></script>
+
+  {% if is_admin %}
+  <script>
+  $(function() {
+    var $lists = $('#lists');
+
+    function update() {
+      $.ajax({
+        type: 'GET',
+        url: '/cards'
+      }).done(function(res) {
+        $lists.empty();
+        for(card of res) {
+          $lists.append(
+            $('<div>').append(card.en_vo + ' : ' + card.ja_vo)
+          )
+        }
+      });
+    }
+
+    update();
+
+    $('#form_post').submit(function() {
+      var en_vo = $(this).find('input[name=en_vo]').val();
+      var ja_vo = $(this).find('input[name=ja_vo]').val();
+
+      $.ajax({
+        type: 'POST',
+        url: '/cards',
+        data: {
+          ja_vo: ja_vo,
+          en_vo: en_vo
+        }
+      }).done(update).error(function(e) {
+        console.warn(e);
+      });
+
+      return false;
+    });
+  });
+  </script>
+  {% endif %}
 </body>
 </html>
