@@ -24,6 +24,25 @@ blueprint = make_twitter_blueprint(
 app.register_blueprint(blueprint, url_prefix="/login")
 
 
+class FormateCard():
+  def __init__(self, vo_data):
+    self.en_vo = vo_data['en_vo']
+    self.ja_vo = vo_data['ja_vo']
+
+  def get(self):
+    return {
+      'en_vo': self.en_vo,
+      'ja_vo': self.ja_vo
+    }
+
+
+def getFormatedCardsData(formatedCards):
+  tmp = []
+  for formatedCard in formatedCards:
+    tmp.append(formatedCard.get())
+  return tmp
+
+
 class Cards(Resource):
   parser = reqparse.RequestParser()
   parser.add_argument('en_vo', type=str, help='english vocabulary')
@@ -33,10 +52,19 @@ class Cards(Resource):
     client = MongoClient('localhost', 27017)
     db = client['vo_book']
     cards = db.cards.find()
-    return dumps(cards)
+
+    formatedCards = []
+    for card in cards:
+      formatedCards.append(FormateCard(card))
+
+    return getFormatedCardsData(formatedCards)
 
   def post(self):
     args = self.parser.parse_args()
+
+    if not args.en_vo or not args.ja_vo:
+      abort(400, message='English vocabulary or japanese vocabulary is not specified')
+
     client = MongoClient('localhost', 27017)
     db = client['vo_book']
 
@@ -62,20 +90,16 @@ api.add_resource(Cards, '/cards')
 
 @app.route('/')
 def index():
-  # for key in session.keys():
-  #   print(key)
-  #   print(session['twitter_oauth_token'])
-  #   print(session['twitter_oauth_token']['user_id'])
   if not twitter.authorized:
     return render_template('index.html',
       login_url=url_for('twitter.login')
     )
   else:
     resp = twitter.get('account/settings.json')
+    print(vars(resp))
     assert resp.ok
 
     parsed=resp.json()
-    print(parsed)
 
     return render_template('index.html',
       logout_url=url_for('logout'),

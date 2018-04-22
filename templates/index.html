@@ -33,6 +33,10 @@
     {% endif %}
   {% endif %}
 
+  <div id="lists">
+
+  </div>
+
   <script
   src="https://code.jquery.com/jquery-2.2.4.js"
   integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
@@ -41,11 +45,27 @@
   {% if is_admin %}
   <script>
   $(function() {
+    var $lists = $('#lists');
+
+    function update() {
+      $.ajax({
+        type: 'GET',
+        url: '/cards'
+      }).done(function(res) {
+        $lists.empty();
+        for(card of res) {
+          $lists.append(
+            $('<div>').append(card.en_vo + ' : ' + card.ja_vo)
+          )
+        }
+      });
+    }
+
+    update();
+
     $('#form_post').submit(function() {
       var en_vo = $(this).find('input[name=en_vo]').val();
       var ja_vo = $(this).find('input[name=ja_vo]').val();
-
-      console.log(ja_vo, en_vo);
 
       $.ajax({
         type: 'POST',
@@ -54,8 +74,10 @@
           ja_vo: ja_vo,
           en_vo: en_vo
         }
+      }).done(update).error(function(e) {
+        console.warn(e);
       });
-      debugger;
+
       return false;
     });
   });
