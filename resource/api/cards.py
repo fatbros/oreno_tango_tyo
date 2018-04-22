@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse, abort
 from pymongo import MongoClient, errors
+from ..model.Model import Model
 
 
 class FormateCard():
@@ -21,15 +22,16 @@ def getFormatedCardsData(formatedCards):
   return tmp
 
 
-class Cards(Resource):
+class Cards(Resource, Model):
   parser = reqparse.RequestParser()
   parser.add_argument('en_vo', type=str, help='english vocabulary')
   parser.add_argument('ja_vo', type=str, help='japanese vocabulary')
 
+  def __init__(self):
+    super().__init__()
+
   def get(self):
-    client = MongoClient('localhost', 27017)
-    db = client['vo_book']
-    cards = db.cards.find()
+    cards = self.getDB().cards.find()
 
     formatedCards = []
     for card in cards:
@@ -43,13 +45,10 @@ class Cards(Resource):
     if not args.en_vo or not args.ja_vo:
       abort(400, message='English vocabulary or japanese vocabulary is not specified')
 
-    client = MongoClient('localhost', 27017)
-    db = client['vo_book']
-
     # pymongo error handle document
     # http://api.mongodb.com/python/current/api/pymongo/errors.html
     try:
-      inserted_card = db.cards.insert_one({
+      inserted_card = self.getDB().cards.insert_one({
         'en_vo': args.en_vo,
         'ja_vo': args.ja_vo
       })
