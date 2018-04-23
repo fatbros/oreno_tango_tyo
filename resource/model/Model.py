@@ -1,4 +1,4 @@
-from pymongo import MongoClient, errors
+from pymongo import MongoClient
 
 class Model():
   mongo_host = 'localhost'
