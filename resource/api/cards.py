@@ -1,43 +1,17 @@
 from flask_restful import Resource, reqparse, abort
-from pymongo import MongoClient, errors
-from ..model.Model import Model
+from pymongo import errors
+from ..model.Cards import CardsModel
 
 
-class FormateCard():
-  def __init__(self, vo_data):
-    self.en_vo = vo_data['en_vo']
-    self.ja_vo = vo_data['ja_vo']
-
-  def get(self):
-    return {
-      'en_vo': self.en_vo,
-      'ja_vo': self.ja_vo
-    }
-
-
-def getFormatedCardsData(formatedCards):
-  tmp = []
-  for formatedCard in formatedCards:
-    tmp.append(formatedCard.get())
-  return tmp
-
-
-class Cards(Resource, Model):
+class Cards(Resource):
   parser = reqparse.RequestParser()
   parser.add_argument('en_vo', type=str, help='english vocabulary')
   parser.add_argument('ja_vo', type=str, help='japanese vocabulary')
 
-  def __init__(self):
-    super().__init__()
+  cards_model = CardsModel()
 
   def get(self):
-    cards = self.getDB().cards.find()
-
-    formatedCards = []
-    for card in cards:
-      formatedCards.append(FormateCard(card))
-
-    return getFormatedCardsData(formatedCards)
+    return Cards.cards_model.getAllCards()
 
   def post(self):
     args = self.parser.parse_args()
@@ -48,16 +22,13 @@ class Cards(Resource, Model):
     # pymongo error handle document
     # http://api.mongodb.com/python/current/api/pymongo/errors.html
     try:
-      inserted_card = self.getDB().cards.insert_one({
-        'en_vo': args.en_vo,
-        'ja_vo': args.ja_vo
-      })
+      Cards.cards_model.insertCard(args.en_vo, args.ja_vo)
     except errors.DuplicateKeyError as e:
       abort(500, message='That vocabulary already exists')
-    except:
-      return False
+    except e:
+      print(e)
+      abort(500)
 
-    return inserted_card.acknowledged
 
   def delete(self):
     return {'hello': 'world by delete'}
