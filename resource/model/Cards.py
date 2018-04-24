@@ -16,8 +16,8 @@ class FormateCard():
 
 def getFormatedCardsData(formated_cards):
   tmp = []
-  for formatedCard in formated_cards:
-    tmp.append(formatedCard.get())
+  for formated_card in formated_cards:
+    tmp.append(formated_card.get())
   return tmp
 
 
