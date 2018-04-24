@@ -1,6 +1,5 @@
 from .Model import Model
 from flask_restful import abort
-from pymongo import errors
 
 
 class FormateCard():
@@ -15,9 +14,9 @@ class FormateCard():
     }
 
 
-def getFormatedCardsData(formatedCards):
+def getFormatedCardsData(formated_cards):
   tmp = []
-  for formatedCard in formatedCards:
+  for formatedCard in formated_cards:
     tmp.append(formatedCard.get())
   return tmp
 
@@ -26,11 +25,11 @@ class CardsModel(Model):
   def getAllCards(self):
     cards = self.db.cards.find()
 
-    formatedCards = []
+    formated_cards = []
     for card in cards:
-      formatedCards.append(FormateCard(card))
+      formated_cards.append(FormateCard(card))
 
-    return getFormatedCardsData(formatedCards)
+    return getFormatedCardsData(formated_cards)
 
   def insertCard(self, en_vo, ja_vo):
     # pymongo error handle document
@@ -40,7 +39,7 @@ class CardsModel(Model):
         'en_vo': en_vo,
         'ja_vo': ja_vo
       })
-    except errors.DuplicateKeyError as e:
+    except self.errors.DuplicateKeyError as e:
       raise
 
     return inserted_card.acknowledged
