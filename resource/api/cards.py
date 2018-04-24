@@ -25,8 +25,7 @@ class Cards(Resource):
       Cards.cards_model.insertCard(args.en_vo, args.ja_vo)
     except errors.DuplicateKeyError as e:
       abort(500, message='That vocabulary already exists')
-    except e:
-      print(e)
+    except:
       abort(500)
 
 

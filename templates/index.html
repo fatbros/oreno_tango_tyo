@@ -14,9 +14,9 @@
 
     <a href="{{logout_url}}">Logout</a>
     <p>username : {{screen_name}}</p>
-    <p>admin? : {{is_admin}}</p>
+    <p>admin? : {{admin}}</p>
 
-    {% if is_admin %}
+    {% if admin %}
     <form id="form_post" action="?">
       <label>
         <p>english vocabulary</p>
@@ -42,7 +42,7 @@
   integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
   crossorigin="anonymous"></script>
 
-  {% if is_admin %}
+  {% if admin %}
   <script>
   $(function() {
     var $lists = $('#lists');
