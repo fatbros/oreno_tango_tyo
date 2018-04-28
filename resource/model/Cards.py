@@ -22,8 +22,8 @@ def getFormatedCardsData(formated_cards):
 
 
 class CardsModel(Model):
-  def getAllCards(self):
-    cards = self.db.cards.find()
+  def getAllCards(self, twitter_user_id):
+    cards = self.db.cards.find({'twitter_user_id': twitter_user_id})
 
     formated_cards = []
     for card in cards:
@@ -31,15 +31,16 @@ class CardsModel(Model):
 
     return getFormatedCardsData(formated_cards)
 
-  def insertCard(self, en_vo, ja_vo):
+  def insertCard(self, en_vo, ja_vo, twitter_user_id):
     # pymongo error handle document
     # http://api.mongodb.com/python/current/api/pymongo/errors.html
     try:
       inserted_card = self.db.cards.insert_one({
         'en_vo': en_vo,
-        'ja_vo': ja_vo
+        'ja_vo': ja_vo,
+        'twitter_user_id': twitter_user_id
       })
-    except self.errors.DuplicateKeyError as e:
+    except:
       raise
 
     return inserted_card.acknowledged
