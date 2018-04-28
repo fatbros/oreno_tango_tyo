@@ -16,8 +16,8 @@
     <p>username : {{screen_name}}</p>
     <p>admin? : {{admin}}</p>
 
-    {% if admin %}
-    <form id="form_post" action="?">
+    {# if admin #}
+    <form id="form_post" action="./">
       <label>
         <p>english vocabulary</p>
         <input type="text" name="en_vo">
@@ -28,9 +28,9 @@
         <input type="text" name="ja_vo">
       </label>
 
-      <input type="submit" value="submit">
+      <input id="submit_button" type="submit" value="submit">
     </form>
-    {% endif %}
+    {# endif #}
   {% endif %}
 
   <div id="lists">
@@ -42,7 +42,7 @@
   integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
   crossorigin="anonymous"></script>
 
-  {% if admin %}
+  {# if admin #}
   <script>
   $(function() {
     var $lists = $('#lists');
@@ -63,7 +63,7 @@
 
     update();
 
-    $('#form_post').submit(function() {
+    $('#form_post').submit(function(e) {
       var en_vo = $(this).find('input[name=en_vo]').val();
       var ja_vo = $(this).find('input[name=ja_vo]').val();
 
@@ -82,6 +82,6 @@
     });
   });
   </script>
-  {% endif %}
+  {# endif #}
 </body>
 </html>

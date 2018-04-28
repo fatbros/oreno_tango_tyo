@@ -7,8 +7,6 @@ class UserModel(Model):
     # http://api.mongodb.com/python/current/api/pymongo/errors.html
     try:
       inserted_user = self.db.users.insert_one(account_setting)
-    except self.errors.DuplicateKeyError as e:
-      raise
     except:
       raise
 

@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, session, render_template, current_app
+from flask import Blueprint, url_for, session, render_template, current_app, g
 from flask_dance.contrib.twitter import twitter
 
 from ..model.User import UserModel

@@ -1,6 +1,15 @@
+from flask import session
 from flask_restful import Resource, reqparse, abort
 from pymongo import errors
 from ..model.Cards import CardsModel
+from ..model.User import UserModel
+
+
+def get_twitter_user_id(func):
+  def _wrapper(*args, **kwargs):
+    return func(*args, session['twitter_oauth_token']['user_id'], **kwargs)
+
+  return _wrapper
 
 
 class Cards(Resource):
@@ -10,10 +19,12 @@ class Cards(Resource):
 
   cards_model = CardsModel()
 
-  def get(self):
-    return Cards.cards_model.getAllCards()
+  @get_twitter_user_id
+  def get(self, twitter_user_id):
+    return Cards.cards_model.getAllCards(twitter_user_id)
 
-  def post(self):
+  @get_twitter_user_id
+  def post(self, twitter_user_id):
     args = self.parser.parse_args()
 
     if not args.en_vo or not args.ja_vo:
@@ -22,9 +33,7 @@ class Cards(Resource):
     # pymongo error handle document
     # http://api.mongodb.com/python/current/api/pymongo/errors.html
     try:
-      Cards.cards_model.insertCard(args.en_vo, args.ja_vo)
-    except errors.DuplicateKeyError as e:
-      abort(500, message='That vocabulary already exists')
+      Cards.cards_model.insertCard(args.en_vo, args.ja_vo, twitter_user_id)
     except:
       abort(500)
 
