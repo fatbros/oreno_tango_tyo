@@ -15,7 +15,8 @@ class Model():
     for cursor in cursors:
       formatedCards.append({
         'en_vo': cursor['en_vo'],
-        'ja_vo': cursor['ja_vo']
+        'ja_vo': cursor['ja_vo'],
+        'object_id': str(cursor['_id'])
       })
 
     return formatedCards

@@ -19,6 +19,7 @@ class Cards(Resource):
   parser = reqparse.RequestParser()
   parser.add_argument('en_vo', type=str, help='english vocabulary')
   parser.add_argument('ja_vo', type=str, help='japanese vocabulary')
+  parser.add_argument('object_id', type=str, help='card object_id')
 
   card_model = CardModel()
 
@@ -34,6 +35,18 @@ class Cards(Resource):
       abort(400, message='English vocabulary or japanese vocabulary is not specified')
 
     try:
-      Cards.card_model.insertCard(args.en_vo, args.ja_vo, twitter_user_id)
+      return Cards.card_model.insertCard(args.en_vo, args.ja_vo, twitter_user_id)
     except:
       abort(500)
+
+  @get_twitter_user_id
+  def delete(self, twitter_user_id):
+    args = self.parser.parse_args()
+    if not args.object_id:
+      abort(400, message='object_id is require parameter')
+
+    try:
+      return Cards.card_model.deleteCard(args.object_id, twitter_user_id)
+    except:
+      abort(500)
+
