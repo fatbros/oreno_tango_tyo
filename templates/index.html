@@ -54,9 +54,15 @@
       }).done(function(res) {
         $lists.empty();
         for(card of res) {
-          $lists.append(
-            $('<div>').append(card.en_vo + ' : ' + card.ja_vo)
-          )
+          var $card = $('<div>')
+            .append(card.en_vo + ' : ' + card.ja_vo)
+
+          var $deleteButton = $('<button>')
+            .val('あああ')
+            .appendTo($card)
+            .data('id', card.object_id)
+
+          $lists.append($card);
         }
       });
     }
@@ -80,6 +86,23 @@
 
       return false;
     });
+
+    $lists.on('click', 'button', function() {
+      var data = $(this).data('id');
+      var $self = $(this);
+
+      $.ajax({
+        type: 'DELETE',
+        url: '/cards',
+        data: {
+          object_id: data
+        }
+      }).done(function(res) {
+        if(res) {
+          $self.parent().remove();
+        }
+      });
+    })
   });
   </script>
   {# endif #}
