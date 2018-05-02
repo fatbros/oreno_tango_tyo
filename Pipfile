@@ -29,9 +29,12 @@ Werkzeug = "==0.14.1"
 "flake8" = "*"
 
 [dev-packages]
+"autopep8" = "*"
 
 [requires]
 python_version = "3.6"
 
 [scripts]
 start = "python server.py"
+lint = "flake8 ."
+fix = "autopep8 -ivr ."
