@@ -36,5 +36,5 @@ python_version = "3.6"
 
 [scripts]
 start = "python server.py"
-lint = "flake8 ."
-fix = "autopep8 -ivr ."
+lint = "flake8 tests resource server.py"
+fix = "autopep8 -ivr tests resource server.py"

@@ -17,7 +17,7 @@ class CardModel(Model):
             'twitter_user_id': twitter_user_id
         })
 
-        return inserted_card.acknowledged
+        return inserted_card
 
     def deleteCard(self, object_id, twitter_user_id):
         delete_card = self.db.cards.delete_one({
@@ -25,4 +25,4 @@ class CardModel(Model):
             'twitter_user_id': twitter_user_id
         })
 
-        return delete_card.acknowledged
+        return delete_card
