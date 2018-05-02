@@ -26,6 +26,7 @@ Flask-RESTful = "==0.3.6"
 MarkupSafe = "==1.0"
 URLObject = "==2.4.3"
 Werkzeug = "==0.14.1"
+"flake8" = "*"
 
 [dev-packages]
 
@@ -34,4 +35,3 @@ python_version = "3.6"
 
 [scripts]
 start = "python server.py"
-
