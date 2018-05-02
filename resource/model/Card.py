@@ -8,7 +8,7 @@ from bson.objectid import ObjectId
 class CardModel(Model):
     def getAllCards(self, twitter_user_id):
         cards = self.db.cards.find({'twitter_user_id': twitter_user_id})
-        return self.formateMongoCursors(cards)
+        return self.formatMongoCursors(cards)
 
     def insertCard(self, en_vo, ja_vo, twitter_user_id):
         inserted_card = self.db.cards.insert_one({

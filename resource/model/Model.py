@@ -10,7 +10,7 @@ class Model():
         self.db = client['vo_book']
         self.errors = errors
 
-    def formateMongoCursors(self, cursors):
+    def formatMongoCursors(self, cursors):
         formatedCards = []
         for cursor in cursors:
             formatedCards.append({
