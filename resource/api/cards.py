@@ -1,6 +1,8 @@
 from flask import session
 from flask_restful import Resource, reqparse, abort
 from ..model.Card import CardModel
+from bson.objectid import ObjectId
+from bson import errors
 
 
 def get_twitter_user_id(func):
@@ -40,9 +42,14 @@ class Cards(Resource):
                 vocabulary is not specified'''
             )
 
-        return Cards.card_model.insertCard(
+        result = Cards.card_model.insertCard(
             args.en_vo, args.ja_vo, twitter_user_id
         )
+
+        return {
+            'insert_id': str(result.inserted_id),
+            'acknowledged': result.acknowledged
+        }
 
     @get_twitter_user_id
     def delete(self, twitter_user_id):
@@ -50,7 +57,16 @@ class Cards(Resource):
         if not args.object_id:
             abort(400, message='object_id is require parameter')
 
-        return Cards.card_model.deleteCard(
+        try:
+            ObjectId(args.object_id)
+        except errors.InvalidId:
+            abort(400, message='invalid object_id')
+
+        result = Cards.card_model.deleteCard(
             args.object_id,
             twitter_user_id
         )
+
+        return {
+            'acknowledged': result.acknowledged
+        }

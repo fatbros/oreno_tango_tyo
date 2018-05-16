@@ -1,7 +1,7 @@
 import unittest
 from bson.objectid import ObjectId
 from resource.model.Card import CardModel
-from .config import twitter_user_id
+from config import twitter_user_id
 
 
 class TestCardModel(unittest.TestCase):
@@ -10,7 +10,7 @@ class TestCardModel(unittest.TestCase):
 
     def test_getAllCards(self):
         cards = self.cardModel.getAllCards(twitter_user_id)
-        self.assertTrue(len(cards) > 0)
+        self.assertGreater(len(cards), 0)
 
     def test_insertCard(self):
         insert_card = self.cardModel.insertCard(
