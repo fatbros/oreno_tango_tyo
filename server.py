@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_dance.contrib.twitter import make_twitter_blueprint, twitter
+from flask_dance.contrib.twitter import make_twitter_blueprint
 from flask_restful import Api
 
 from resource.api.cards import Cards
@@ -12,9 +12,9 @@ server_directory_path = os.path.dirname(os.path.abspath(__file__))
 
 # flask setting
 app = Flask(
-  __name__,
-  instance_relative_config=True,
-  instance_path=os.path.join(server_directory_path, 'instance')
+    __name__,
+    instance_relative_config=True,
+    instance_path=os.path.join(server_directory_path, 'instance')
 )
 app.config.from_pyfile('config.py')
 
@@ -33,5 +33,5 @@ app.register_blueprint(logout.app, url_prefix='/logout')
 
 
 if __name__ == '__main__':
-  app.debug = app.config['DEBUG']
-  app.run(host=app.config['HOST'], port=app.config['PORT'])
+    app.debug = app.config['DEBUG']
+    app.run(host=app.config['HOST'], port=app.config['PORT'])
