@@ -3,6 +3,7 @@ from flask_dance.contrib.twitter import make_twitter_blueprint
 from flask_restful import Api
 
 from resource.api.cards import Cards
+from resource.api.twitter_request_token import TwitterRequestToken
 
 from resource.bp import index, logout
 
@@ -20,7 +21,8 @@ app.config.from_pyfile('config.py')
 
 # flask_restful setting
 api = Api(app)
-api.add_resource(Cards, '/cards')
+api.add_resource(Cards, '/api/cards')
+api.add_resource(TwitterRequestToken, '/api/v1/auth/twitter_request_token')
 
 # flask blueprint setting
 blueprint = make_twitter_blueprint(
