@@ -28,10 +28,6 @@ def parse_qsl(url):
 
 
 class TwitterRequestToken(Resource):
-
-    # access_token_url = 'https://twitter.com/oauth/access_token'
-    # authenticate_url = 'https://twitter.com/oauth/authorize
-
     def post(self):
         config_list = current_app.config
 
