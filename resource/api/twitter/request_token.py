@@ -1,5 +1,4 @@
-from flask import current_app
-from flask_restful import Resource, abort
+from flask_restful import Resource
 from .twitter import Twitter
 import oauth2 as oauth
 

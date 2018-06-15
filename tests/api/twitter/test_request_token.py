@@ -14,7 +14,7 @@ class TestTwitterRequestToken(unittest.TestCase):
         pass
 
     def test_post_success(self):
-        data = self.app.post('/api/v1/auth/twitter_request_token')
+        data = self.app.post(TestTwitterRequestToken.api_url)
         self.assertEqual(data.status_code, 200)
 
         request_token = json.loads(data.get_data())
