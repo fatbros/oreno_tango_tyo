@@ -1,11 +1,11 @@
 import unittest
 import json
 from server import app
-from config import twitter_user_id
+from tests.config import twitter_user_id
 
 
 class TestApiCards(unittest.TestCase):
-    api_url = '/cards'
+    api_url = '/api/cards'
 
     def setUp(self):
         app.config['TESTING'] = True
