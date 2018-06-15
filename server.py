@@ -3,8 +3,8 @@ from flask_dance.contrib.twitter import make_twitter_blueprint
 from flask_restful import Api
 
 from resource.api.cards import Cards
-from resource.api.twitter_request_token import TwitterRequestToken
-from resource.api.twitter_access_token import TwitterAccessToken
+from resource.api.twitter.request_token import TwitterRequestToken
+from resource.api.twitter.access_token import TwitterAccessToken
 
 from resource.bp import index, logout
 
