@@ -16,7 +16,7 @@ def _read_client_secrets():
 
 
 class GoogleAuthorizationUrl(Resource):
-    def post(self):
+    def get(self):
         secrets_file = _read_client_secrets()
 
         # Use the client_secret.json file
@@ -61,6 +61,10 @@ def credentials_to_dict(credentials):
     }
 
 
+from .email import get_userinfo_from_google
+from ...model.User import UserModel
+
+
 class GoogleCredentials(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('callback_url', type=str, required=True,
@@ -89,4 +93,15 @@ class GoogleCredentials(Resource):
         credentials = flow.credentials
         credentials_dict = credentials_to_dict(credentials)
 
-        return credentials_dict
+        # save credentials, userinfo
+        userinfo = get_userinfo_from_google(credentials_dict)
+        credentials_dict['email'] = userinfo['email']
+        credentials_dict['id'] = userinfo['id']
+
+        insert_data = UserModel().insertUser(credentials_dict)
+
+        return {
+            'objectid': str(insert_data.inserted_id),
+            'email': userinfo['email'],
+            'id': userinfo['id']
+        }

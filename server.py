@@ -5,7 +5,8 @@ from flask_restful import Api
 from resource.api.cards import Cards
 from resource.api.google.credentials import GoogleAuthorizationUrl
 from resource.api.google.credentials import GoogleCredentials
-from resource.api.google.mail import GooglePeopleEmail
+
+from resource.api.password.password import SavePassword
 
 from resource.bp import index, logout
 
@@ -26,7 +27,7 @@ api = Api(app)
 api.add_resource(Cards, '/api/cards')
 api.add_resource(GoogleAuthorizationUrl, '/api/google/authorization_url')
 api.add_resource(GoogleCredentials, '/api/google/credentials')
-api.add_resource(GooglePeopleEmail, '/api/google/people/email')
+api.add_resource(SavePassword, '/api/password')
 
 # flask blueprint setting
 blueprint = make_twitter_blueprint(
