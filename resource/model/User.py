@@ -7,8 +7,10 @@ class UserModel(Model):
 
         return inserted_user
 
-    def getUser(self, user_id):
-        get_user = self.db.users.find_one({'twitter_user_id': user_id})
+    def getUser(self, object_id):
+        get_user = self.db.users.find_one({
+            '_id': object_id
+        })
 
         return get_user
 
@@ -20,5 +22,3 @@ class UserModel(Model):
         })
 
         return update_password
-
-

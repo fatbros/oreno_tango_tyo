@@ -5,7 +5,6 @@ from flask_restful import Api
 from resource.api.cards import Cards
 from resource.api.google.credentials import GoogleAuthorizationUrl
 from resource.api.google.credentials import GoogleCredentials
-
 from resource.api.password.password import SavePassword
 
 from resource.bp import index, logout

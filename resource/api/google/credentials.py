@@ -1,5 +1,6 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource, reqparse, abort
 import google_auth_oauthlib.flow
+from oauthlib.oauth2.rfc6749 import errors
 import os
 import json
 
@@ -80,12 +81,27 @@ class GoogleCredentials(Resource):
             secrets_file,
             scopes=scopes,
             state=args.state)
+
         flow.redirect_uri = secrets_file['web']['redirect_uris'][0]
 
         # Use the authorization server's
         # response to fetch the OAuth 2.0 tokens.
         authorization_response = args.callback_url
-        flow.fetch_token(authorization_response=authorization_response)
+
+        try:
+            flow.fetch_token(authorization_response=authorization_response)
+
+        except (
+            # callback_urlがhttpsでない場合
+            errors.InsecureTransportError,
+            # callback_url, stateが不正の場合
+            errors.MissingCodeError,
+            # stateデータが不正の場合
+            errors.MismatchingStateError,
+            # 承認後, 同じcallback_url, stateでリクエスト
+            errors.InvalidGrantError
+        ):
+            return abort(400)
 
         # Store credentials in the session.
         # ACTION ITEM: In a production app, you likely want to save these
