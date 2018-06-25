@@ -28,6 +28,11 @@ URLObject = "==2.4.3"
 Werkzeug = "==0.14.1"
 "flake8" = "*"
 "oauth2" = "*"
+google-api-python-client = "*"
+google-auth = "*"
+google-auth-oauthlib = "*"
+"google-auth-httplib2" = "*"
+"autopep8" = "*"
 
 [dev-packages]
 "autopep8" = "*"

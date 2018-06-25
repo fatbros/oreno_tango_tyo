@@ -3,8 +3,9 @@ from flask_dance.contrib.twitter import make_twitter_blueprint
 from flask_restful import Api
 
 from resource.api.cards import Cards
-from resource.api.twitter.request_token import TwitterRequestToken
-from resource.api.twitter.access_token import TwitterAccessToken
+from resource.api.google.credentials import GoogleAuthorizationUrl
+from resource.api.google.credentials import GoogleCredentials
+from resource.api.password.password import SavePassword
 
 from resource.bp import index, logout
 
@@ -23,8 +24,9 @@ app.config.from_pyfile('config.py')
 # flask_restful setting
 api = Api(app)
 api.add_resource(Cards, '/api/cards')
-api.add_resource(TwitterRequestToken, '/api/v1/auth/twitter_request_token')
-api.add_resource(TwitterAccessToken, '/api/v1/auth/twitter_access_token')
+api.add_resource(GoogleAuthorizationUrl, '/api/google/authorization_url')
+api.add_resource(GoogleCredentials, '/api/google/credentials')
+api.add_resource(SavePassword, '/api/password')
 
 # flask blueprint setting
 blueprint = make_twitter_blueprint(
