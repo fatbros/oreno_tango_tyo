@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "af3d67489d733d71bb6fce67b421726c8a3d65240f12bfa6f1bbb87882e9a473"
+            "sha256": "51ffdac8cb2d18f3e2d3eae99e524c1e7ee4ce1234040d9827c910131a25b0ba"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -77,15 +77,6 @@
             ],
             "index": "pypi",
             "version": "==0.12.2"
-        },
-        "flask-dance": {
-            "hashes": [
-                "sha256:0c608d9f003a38493fdff092a2eb482c2c6b768ef878112e0d03676a6a92fa67",
-                "sha256:2cea678b882f94e04f82545dd0fcf751376ff58b5cd8e3af489529b11bdeb63d",
-                "sha256:56b50af359842e767a9b20d1ea2afea2a7268558e76c1fbadc652aa840abec7d"
-            ],
-            "index": "pypi",
-            "version": "==0.14.0"
         },
         "flask-restful": {
             "hashes": [
@@ -177,14 +168,6 @@
                 "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"
             ],
             "version": "==0.6.1"
-        },
-        "oauth2": {
-            "hashes": [
-                "sha256:15b5c42301f46dd63113f1214b0d81a8b16254f65a86d3c32a1b52297f3266e6",
-                "sha256:c006a85e7c60107c7cc6da1b184b5c719f6dd7202098196dfa6e55df669b59bf"
-            ],
-            "index": "pypi",
-            "version": "==1.9.0.post1"
         },
         "oauthlib": {
             "hashes": [

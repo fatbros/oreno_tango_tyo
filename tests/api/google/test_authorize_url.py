@@ -18,5 +18,3 @@ class TestGoogleAuthorizeUrl(unittest.TestCase):
 
         self.assertGreater(len(dict_data['authorization_url']), 0)
         self.assertGreater(len(dict_data['state']), 0)
-
-
