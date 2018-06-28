@@ -18,7 +18,7 @@ class UserModel(Model):
         update_password = self.db.users.update({
             '_id': object_id
         }, {
-            'hash_password': hash_password
+            '$set': {'hash_password': hash_password}
         })
 
         return update_password
