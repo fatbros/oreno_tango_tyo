@@ -22,3 +22,11 @@ class UserModel(Model):
         })
 
         return update_password
+
+    def getUserFromPasswordAndEmail(self, hash_password, email):
+        get_user = self.db.users.find_one({
+            'hash_password': hash_password,
+            'email': email
+        })
+
+        return get_user

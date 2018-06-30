@@ -5,6 +5,7 @@ from resource.api.cards import Cards
 from resource.api.google.credentials import GoogleAuthorizationUrl
 from resource.api.google.credentials import GoogleCredentials
 from resource.api.password.password import SavePassword
+from resource.api.login.login import Login
 
 import os
 
@@ -24,6 +25,7 @@ api.add_resource(Cards, '/api/cards')
 api.add_resource(GoogleAuthorizationUrl, '/api/google/authorization_url')
 api.add_resource(GoogleCredentials, '/api/google/credentials')
 api.add_resource(SavePassword, '/api/password')
+api.add_resource(Login, '/api/login')
 
 
 if __name__ == '__main__':

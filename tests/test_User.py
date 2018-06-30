@@ -40,4 +40,29 @@ class TestUserModel(unittest.TestCase):
 
         self.assertEqual(hash_password, get_user['hash_password'])
 
+    def test_get_user_from_password_and_email(self):
+        hash_password = 'aabbcc'
+        email = 'aaa@gmail.com'
 
+        credentials = CredentialsMock()
+        credentials_dict = credentials_to_dict(credentials)
+        credentials_dict['hash_password'] = hash_password
+        credentials_dict['email'] = email
+
+        self.userModel.insertUser(credentials_dict)
+
+        get_user = self.userModel.getUserFromPasswordAndEmail(
+            'test', 'test')
+        self.assertEqual(get_user, None)
+
+        get_user = self.userModel.getUserFromPasswordAndEmail(
+            hash_password, 'test')
+        self.assertEqual(get_user, None)
+
+        get_user = self.userModel.getUserFromPasswordAndEmail(
+            'test', email)
+        self.assertEqual(get_user, None)
+
+        get_user = self.userModel.getUserFromPasswordAndEmail(
+            hash_password, email)
+        self.assertDictEqual(get_user, credentials_dict)

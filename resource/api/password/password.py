@@ -9,9 +9,9 @@ from ...model.User import UserModel
 class SavePassword(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('password', type=str, required=True,
-                        help='password is required paramater')
+                        help='password is required parameter')
     parser.add_argument('objectid', type=str, required=True,
-                        help='objectid is required paramater')
+                        help='objectid is required parameter')
 
     def post(self):
         args = self.parser.parse_args()
@@ -27,7 +27,7 @@ class SavePassword(Resource):
         model = UserModel()
         update_password = model.updatePassword(objectid, hash_password)
 
-        if update_password['updatedExisting'] is True:
+        if update_password.acknowledged is True:
             return True
 
         else:

@@ -69,9 +69,9 @@ from ...model.User import UserModel
 class GoogleCredentials(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('callback_url', type=str, required=True,
-                        help='callback_url is required paramater')
+                        help='callback_url is required parameter')
     parser.add_argument('state', type=str, required=True,
-                        help='state is required paramater')
+                        help='state is required parameter')
 
     def post(self):
         args = self.parser.parse_args()
