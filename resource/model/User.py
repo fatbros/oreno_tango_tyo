@@ -7,16 +7,16 @@ class UserModel(Model):
 
         return inserted_user
 
-    def getUser(self, object_id):
+    def getUser(self, objectid):
         get_user = self.db.users.find_one({
-            '_id': object_id
+            '_id': objectid
         })
 
         return get_user
 
-    def updatePassword(self, object_id, hash_password):
-        update_password = self.db.users.update({
-            '_id': object_id
+    def updatePassword(self, objectid, hash_password):
+        update_password = self.db.users.update_one({
+            '_id': objectid
         }, {
             '$set': {'hash_password': hash_password}
         })

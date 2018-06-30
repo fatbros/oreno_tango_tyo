@@ -118,6 +118,5 @@ class GoogleCredentials(Resource):
 
         return {
             'objectid': str(insert_data.inserted_id),
-            'email': userinfo['email'],
-            'id': userinfo['id']
+            'email': userinfo['email']
         }
