@@ -28,5 +28,7 @@ class Login(Resource):
             abort(401)
 
         return {
-            'objectid': str(get_user['_id'])
+            'objectid': str(get_user['_id']),
+            'jwt_token': get_user['jwt_token'],
+            'email': get_user['email']
         }
