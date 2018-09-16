@@ -3,7 +3,7 @@
 ### authorization url
 http://localhost:5000/api/google/authorization_url
 
-#### res
+#### res params
 * authorization_url
 * state
 
@@ -14,7 +14,7 @@ http://localhost:5000/api/google/authorization_url
 * callback_url
 * state
 
-#### res
+#### res params
 * objectid
 * email
 * jwt_token
@@ -27,8 +27,20 @@ http://localhost:5000/api/google/authorization_url
 * password
 * jwt_token
 
-#### res
+#### res params
 * bool
+
+### login
+* curl -X POST http://localhost:5000/api/login -d "email=?" -d "password=?"
+
+#### req params
+* email
+* password
+
+#### res params
+* objectid
+* email
+* jwt_token
 
 ## curl memo
 * res headerを見る場合は `-i` を付ける
