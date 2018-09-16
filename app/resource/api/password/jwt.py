@@ -26,6 +26,8 @@ def verify(jwt_token):
             return decode_data
     except jwt.exceptions.InvalidSignatureError:
         return False
+    except jwt.exceptions.DecodeError:
+        return False
 
     return False
 
