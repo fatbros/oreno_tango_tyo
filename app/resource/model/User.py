@@ -23,6 +23,15 @@ class UserModel(Model):
 
         return update_password
 
+    def updateJwtToken(self, objectid, jwt_token):
+        update_jwt_token = self.db.users.update_one({
+            '_id': objectid
+        }, {
+            '$set': {'jwt_token': jwt_token}
+        })
+
+        return update_jwt_token
+
     def getUserFromPasswordAndEmail(self, hash_password, email):
         get_user = self.db.users.find_one({
             'hash_password': hash_password,

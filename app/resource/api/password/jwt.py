@@ -21,9 +21,15 @@ def verify(jwt_token):
 
     try:
         if len(tmp) == 3 and header['alg'] == 'HS256':
-            decode_data = jwt.decode(jwt_token, jwt_secret, algorithms=['HS256'])
+            decode_data = jwt.decode(
+                jwt_token, jwt_secret, algorithms=['HS256'])
             return decode_data
     except jwt.exceptions.InvalidSignatureError:
         return False
 
     return False
+
+
+def createJwtToken(dict):
+    jwt_token = jwt.encode(dict, jwt_secret, algorithm='HS256').decode('ascii')
+    return jwt_token
