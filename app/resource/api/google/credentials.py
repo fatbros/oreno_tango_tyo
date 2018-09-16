@@ -7,8 +7,13 @@ import json
 server_directory_path = os.path.dirname(os.path.abspath(__file__))
 client_secrets_path = os.path.join(
     server_directory_path, '../../../', 'instance/client_secret.json')
-scopes = ['https://www.googleapis.com/auth/user.emails.read',
-          'https://www.googleapis.com/auth/plus.login']
+scopes = [
+    'https://www.googleapis.com/auth/plus.profile.agerange.read',
+    'https://www.googleapis.com/auth/plus.me',
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/user.emails.read',
+    'https://www.googleapis.com/auth/plus.profile.language.read'
+]
 
 
 def _read_client_secrets():
@@ -64,14 +69,15 @@ def credentials_to_dict(credentials):
 
 from .email import get_userinfo_from_google
 from ...model.User import UserModel
+from ..password.jwt import createJwtToken
 
 
 class GoogleCredentials(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument('callback_url', type=str, required=True,
-                        help='callback_url is required paramater')
+                        help='callback_url is required parameter')
     parser.add_argument('state', type=str, required=True,
-                        help='state is required paramater')
+                        help='state is required parameter')
 
     def post(self):
         args = self.parser.parse_args()
@@ -111,13 +117,22 @@ class GoogleCredentials(Resource):
 
         # save credentials, userinfo
         userinfo = get_userinfo_from_google(credentials_dict)
+
         credentials_dict['email'] = userinfo['email']
         credentials_dict['id'] = userinfo['id']
 
         insert_data = UserModel().insertUser(credentials_dict)
+        inserted_id = str(insert_data.inserted_id)
+
+        jwt_token = createJwtToken({
+            'objectid': inserted_id,
+            'email': userinfo['email']
+        })
+
+        UserModel().updateJwtToken(insert_data.inserted_id, jwt_token)
 
         return {
-            'objectid': str(insert_data.inserted_id),
+            'objectid': inserted_id,
             'email': userinfo['email'],
-            'id': userinfo['id']
+            'jwt_token': jwt_token
         }
