@@ -6,6 +6,7 @@ from app.resource.api.google.credentials import GoogleAuthorizationUrl
 from app.resource.api.google.credentials import GoogleCredentials
 from app.resource.api.password.password import Password
 from app.resource.api.login.login import Login
+from app.resource.api.login.check import Check
 
 import os
 
@@ -26,6 +27,7 @@ api.add_resource(GoogleAuthorizationUrl, '/api/google/authorization_url')
 api.add_resource(GoogleCredentials, '/api/google/credentials')
 api.add_resource(Password, '/api/password')
 api.add_resource(Login, '/api/login')
+api.add_resource(Check, '/api/login/check')
 
 
 if __name__ == '__main__':
